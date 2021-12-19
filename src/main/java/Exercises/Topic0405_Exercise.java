@@ -1,4 +1,4 @@
-package topic1;
+package Exercises;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +15,7 @@ public class Topic0405_Exercise {
     String projectPath = System.getProperty("user.dir") + "/driver";
 
     @Test
-    public void TC_01_Chrome() {
+    public void TC_01_LoginInvalidEmail() {
         System.setProperty("webdriver.chrome.driver", projectPath + "/chromedriver");
         driver = new ChromeDriver();
         driver.get("https://alada.vn/tai-khoan/dang-ky.html");
