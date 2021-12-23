@@ -19,6 +19,7 @@ public class Topic0708_Textarea_Exercise {
     String loginPageUrl;
     String registerPageUrl;
     String customerName, gender, date, addressInput, addressOutput, city, state, pin, telephone, emailid, password;
+    String addressInputEdit, addressOutputEdit, cityEdit, stateEdit, pinEdit, telephoneEdit, emailidEdit, passwordEdit;
 
     @BeforeClass
     public void beforeClass(){
@@ -42,6 +43,15 @@ public class Topic0708_Textarea_Exercise {
         telephone = "090123456";
         emailid = "test" + getRandomNumber() +"@yopmail.com";
         password = "123456";
+
+        addressInputEdit = "101\nVN";
+        addressOutputEdit = "101 VN";
+        cityEdit = "HCM";
+        stateEdit = "QTB";
+        pinEdit = "100000";
+        telephoneEdit = "090123456";
+        emailidEdit = "test" + getRandomNumber() +"@yopmailEdit.com";
+        passwordEdit = "123456";
     }
 
     @Test
@@ -106,7 +116,8 @@ public class Topic0708_Textarea_Exercise {
         customerID = driver.findElement(By.xpath("//td[text()='Customer ID']/following-sibling::td")).getText();
     }
 
-    @Test
+    //@Test
+    //No change to edit
     public void TC_04_Edit_Customer() {
         driver.findElement(By.xpath("//a[text()='Edit Customer']")).click();  // Other xpath: //ul[@class='menusubnav']/li[3]
 
@@ -114,7 +125,20 @@ public class Topic0708_Textarea_Exercise {
         driver.findElement(By.name("AccSubmit")).click();
         Assert.assertEquals(driver.findElement(By.name("name")).getAttribute("value"), customerName);
         Assert.assertEquals(driver.findElement(By.name("addr")).getText(), addressInput);
+
+        // Edit field enable to update:
+        driver.findElement(By.name("addr")).sendKeys(addressInputEdit);  // Textarea
+        driver.findElement(By.name("city")).sendKeys(cityEdit);
+        driver.findElement(By.name("state")).sendKeys(stateEdit);
+        driver.findElement(By.name("pinno")).sendKeys(pinEdit);
+        driver.findElement(By.name("telephoneno")).sendKeys(telephoneEdit);
+        driver.findElement(By.name("emailid")).sendKeys(emailidEdit);
+        driver.findElement(By.name("password")).sendKeys(passwordEdit);
+        driver.findElement(By.name("sub")).click();
+
     }
+
+
 
     @AfterClass
     public void afterClass(){

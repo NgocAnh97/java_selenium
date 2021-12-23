@@ -26,8 +26,6 @@ public class Topic_Template {
 
     @Test
     public void TC_01_() {
-        driver.findElement(By.cssSelector(".footer a[title = 'My Account']")).click();
-        Assert.assertEquals(driver.getCurrentUrl(),"http://live.techpanda.org/index.php/customer/account/login/");
 
     }
 
