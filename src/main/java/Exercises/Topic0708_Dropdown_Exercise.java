@@ -1,11 +1,7 @@
 package Exercises;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -14,8 +10,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.servlet.annotation.WebListener;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -27,18 +21,21 @@ public class Topic0708_Dropdown_Exercise {
     JavascriptExecutor jsExecutor;
     String osName = System.getProperty("os.name");
     String projectPath = System.getProperty("user.dir") + "/driver";
-    Select select, dayDropdown, monthlyDropdown,yearDropdown, numberSelect;
+    Select select, dayDropdown, monthlyDropdown, yearDropdown, numberSelect;
 
     @BeforeClass
     public void beforeClass() {
-        if(osName.contains("Windows")){
-            System.setProperty("webdriver.chrome.driver", projectPath + "\\chromedriver");
+        if (osName.contains("Windows")) {
+            System.setProperty("webdriver.chrome.driver", projectPath + "\\chromedriver.exe");
         } else {
             System.setProperty("webdriver.chrome.driver", projectPath + "/chromedriver");
         }
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
+//        Dimension dimension = new Dimension(720, 680);
+//        driver.manage().window().setSize(dimension);
         jsExecutor = (JavascriptExecutor) driver;
-        explicitWait = new WebDriverWait(driver,30);
+        explicitWait = new WebDriverWait(driver, 30);
         // Wait element to ready
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 //        driver.get("https://www.rode.com/wheretobuy");
@@ -46,6 +43,7 @@ public class Topic0708_Dropdown_Exercise {
 
     //@Test
     public void TC_01_Default_Dropdown() {
+        driver.get("https://www.rode.com/wheretobuy");
         select = new Select(driver.findElement(By.id("where_country")));
 //        select.selectByValue("Vietnam");
         select.selectByVisibleText("Vietnam");
@@ -56,7 +54,7 @@ public class Topic0708_Dropdown_Exercise {
         Assert.assertEquals(select.getOptions().size(), 233);
 
         driver.findElement(By.name("search_loc_submit")).click();
-        sleepInsecond(4);
+        sleepInSecond(4);
         Assert.assertEquals(driver.findElement(By.cssSelector(".result_count span")).getText(), "32");
 
         List<WebElement> results = driver.findElements(By.cssSelector("#search_results .result_item .store_name"));
@@ -91,9 +89,9 @@ public class Topic0708_Dropdown_Exercise {
         driver.findElement(By.id("ConfirmPassword")).sendKeys("123456aA@@");
 
         driver.findElement(By.id("register-button")).click();
-        sleepInsecond(5);
+        sleepInSecond(5);
 
-        Assert.assertEquals(driver.findElement(By.className("result")).getText(),"Your registration completed");
+        Assert.assertEquals(driver.findElement(By.className("result")).getText(), "Your registration completed");
         driver.findElement(By.className("ico-account")).click();
 
         // Road new page => gan lai du lieu moi
@@ -110,17 +108,17 @@ public class Topic0708_Dropdown_Exercise {
     public void TC_03_Custom_Dropdown() {
         driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 
-        selectItemInCustomDropdown("//span[@id='number-button']","//ul[@id='number-menu']/li/div","19");
+        selectItemInCustomDropdown("//span[@id='number-button']", "//ul[@id='number-menu']/li/div", "19");
 
-        selectItemInCustomDropdown("//span[@id='number-button']","//ul[@id='number-menu']/li/div","4");
+        selectItemInCustomDropdown("//span[@id='number-button']", "//ul[@id='number-menu']/li/div", "4");
 
     }
 
-   //@Test
+    //@Test
     public void TC_04_ReactJS() {
         driver.get("https://react.semantic-ui.com/maximize/dropdown-example-selection/");
 
-        selectItemInCustomDropdown("//i[@class='dropdown icon']","//div[@role='option']/span","Justen Kitsune");
+        selectItemInCustomDropdown("//i[@class='dropdown icon']", "//div[@role='option']/span", "Justen Kitsune");
         Assert.assertTrue(driver.findElement(By.xpath("//div[@class='divider text' and text() = 'Justen Kitsune']")).isDisplayed());
     }
 
@@ -128,24 +126,25 @@ public class Topic0708_Dropdown_Exercise {
     public void TC_05_VueJS() {
         driver.get("https://mikerodham.github.io/vue-dropdowns/");
 
-        selectItemInCustomDropdown("//li[@class='dropdown-toggle']","//ul[@class='dropdown-menu']/li/a","Third Option");
-        Assert.assertEquals(driver.findElement(By.xpath("//li[@class='dropdown-toggle']")).getText(),"Third Option");
+        selectItemInCustomDropdown("//li[@class='dropdown-toggle']", "//ul[@class='dropdown-menu']/li/a", "Third Option");
+        Assert.assertEquals(driver.findElement(By.xpath("//li[@class='dropdown-toggle']")).getText(), "Third Option");
     }
 
     //@Test
     public void TC_06_Angular() {
         driver.get("https://ej2.syncfusion.com/angular/demos/?_ga=2.262049992.437420821.1575083417-524628264.1575083417#/material/drop-down-list/data-binding");
 
-        selectItemInCustomDropdown("//ejs-dropdownlist[@ID='games']","//ul[@id='games_options']/li","Tennis");
+        selectItemInCustomDropdown("//ejs-dropdownlist[@ID='games']", "//ul[@id='games_options']/li", "Tennis");
 
-        Assert.assertEquals(jsExecutor.executeScript("return document.querySelector('#games input').value;"),"Tennis");
+        Assert.assertEquals(jsExecutor.executeScript("return document.querySelector('#games input').value;"), "Tennis");
     }
 
     @Test
     public void TC_07_Angular() {
         driver.get("https://tiemchungcovid19.gov.vn/portal/register-person");
-        selectItemInCustomDropdown("//ng-select[@bindvalue='provinceCode']","//div[contains(@class,'ng-dropdown-panel-items')]","Tỉnh Vĩnh Phúc");
-        Assert.assertEquals(jsExecutor.executeScript("return document.querySelector('ng-select[formcontrolname=\"provinceCode\"] div.ng-value-container').outerText;"), "Tỉnh Vĩnh Phúc");
+        selectItemInCustomDropdown("//ng-select[@bindvalue='provinceCode']//span[@class='ng-arrow-wrapper']", "//span[contains(@class, 'ng-option-label')]", "Tỉnh Cao Bằng");
+        Assert.assertEquals(driver.findElement(By.xpath("//ng-select[@bindvalue=\"provinceCode\"]//span[contains(@class,'ng-value-label ')]")).getText(),"Tỉnh Cao Bằng");
+        //Assert.assertEquals(jsExecutor.executeScript("return document.querySelector('ng-select[formcontrolname='provinceCode'] div.ng-value-container').outerText;"), "Tỉnh Vĩnh Phúc");
     }
 
     @AfterClass
@@ -153,10 +152,13 @@ public class Topic0708_Dropdown_Exercise {
         driver.quit();
     }
 
-    public  void selectItemInCustomDropdown(String parentXpath, String childXpath, String expectItemText){
+    public void selectItemInCustomDropdown(String parentXpath, String childXpath, String expectItemText) {
         explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(parentXpath)));
-        driver.findElement(By.xpath(parentXpath)).click();
-        sleepInsecond(1);
+//        driver.findElement(By.xpath(parentXpath)).click();
+        jsExecutor.executeScript("argument[0].scrollIntoView(false);", parentXpath);
+        jsExecutor.executeScript("argument[0].click();", parentXpath);
+
+        sleepInSecond(1);
         // B2: Cho cho tat ca cac item con duoc presence co trong HTML DOM trong vong 30s (khoi tao beforeClass)
         explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(childXpath)));
 
@@ -165,22 +167,22 @@ public class Topic0708_Dropdown_Exercise {
 //        System.out.println("Tong so luong item trong dropdown: " + childItems.size());
         System.out.println();
         // B4: Duyet cac item (lap) → chon cai item can chon
-        for (WebElement tempElement : childItems){
-            if(tempElement.getText().trim().equals(expectItemText)){
-                if(tempElement.isDisplayed()){
+        for (WebElement tempElement : childItems) {
+            if (tempElement.getText().trim().equals(expectItemText)) {
+                if (tempElement.isDisplayed()) {
                     System.out.println("Click by Selenium - " + tempElement.getText());
                     tempElement.click();
-                    sleepInsecond(1);
+                    sleepInSecond(1);
                 } else {
                     System.out.println("Click by Javascript - " + tempElement.getText());
                     // Scroll to element
-//                    WebElement temp = driver.findElement(By.xpath("//section[@class='inner-page mt30']"));
-                    jsExecutor.executeScript("argument[0].scrollIntoView(false);", tempElement);
-                    sleepInsecond(2);
+                    WebElement temp = driver.findElement(By.xpath("//form[contains(@class,'ng-pristine')]"));
+                    jsExecutor.executeScript("argument[0].scrollIntoView(false);", temp);
+                    sleepInSecond(2);
                     // Click by JavascriptExecutor
                     explicitWait.until(ExpectedConditions.elementToBeClickable(tempElement));
                     jsExecutor.executeScript("argument[0].click();", tempElement);
-                    sleepInsecond(2);
+                    sleepInSecond(2);
                 }
                 break;
             }
@@ -192,7 +194,7 @@ public class Topic0708_Dropdown_Exercise {
         return randomNumber.nextInt(9999);
     }
 
-    public void sleepInsecond(long second) {
+    public void sleepInSecond(long second) {
         try {
             Thread.sleep(second * 1000);
         } catch (InterruptedException e) {

@@ -13,15 +13,19 @@ import java.util.concurrent.TimeUnit;
 // Link docs:
 public class Topic_Template {
     WebDriver driver;
+    String osName = System.getProperty("os.name");
     String projectPath = System.getProperty("user.dir") + "/driver";
 
     @BeforeClass
     public void beforeClass(){
-        System.setProperty("webdriver.chrome.driver", projectPath + "/chromedriver");
+        if(osName.contains("Windows")){
+            System.setProperty("webdriver.chrome.driver", projectPath + "\\chromedriver.exe");
+        } else {
+            System.setProperty("webdriver.chrome.driver", projectPath + "/chromedriver");
+        }
         driver = new ChromeDriver();
         // Wait element to ready
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        driver.get("");
     }
 
     @Test
@@ -34,7 +38,7 @@ public class Topic_Template {
         driver.quit();
     }
 
-    public void sleepInsecond(long second){
+    public void sleepInSecond(long second){
         try{
             Thread.sleep(second*1000);
         } catch  (InterruptedException e){
