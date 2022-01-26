@@ -1,6 +1,9 @@
 package Exercises;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -104,7 +107,7 @@ public class Topic0708_Dropdown_Exercise {
         Assert.assertEquals(yearDropdown.getFirstSelectedOption().getText(), "1980");
     }
 
-    //@Test
+    @Test
     public void TC_03_Custom_Dropdown() {
         driver.get("http://jqueryui.com/resources/demos/selectmenu/default.html");
 
@@ -139,12 +142,11 @@ public class Topic0708_Dropdown_Exercise {
         Assert.assertEquals(jsExecutor.executeScript("return document.querySelector('#games input').value;"), "Tennis");
     }
 
-    @Test
+//    @Test
     public void TC_07_Angular() {
         driver.get("https://tiemchungcovid19.gov.vn/portal/register-person");
-        selectItemInCustomDropdown("//ng-select[@bindvalue='provinceCode']//span[@class='ng-arrow-wrapper']", "//span[contains(@class, 'ng-option-label')]", "Tỉnh Cao Bằng");
-        Assert.assertEquals(driver.findElement(By.xpath("//ng-select[@bindvalue=\"provinceCode\"]//span[contains(@class,'ng-value-label ')]")).getText(),"Tỉnh Cao Bằng");
-        //Assert.assertEquals(jsExecutor.executeScript("return document.querySelector('ng-select[formcontrolname='provinceCode'] div.ng-value-container').outerText;"), "Tỉnh Vĩnh Phúc");
+        selectItemInCustomDropdown("//ng-select[@bindvalue='provinceCode']", "//span[contains(@class, 'ng-option-label')]", "Tỉnh Cao Bằng");
+        Assert.assertEquals(driver.findElement(By.xpath("//ng-select[@bindvalue='provinceCode']//span[contains(@class,'ng-value-label ')]")).getText(), "Tỉnh Cao Bằng");
     }
 
     @AfterClass
@@ -154,18 +156,19 @@ public class Topic0708_Dropdown_Exercise {
 
     public void selectItemInCustomDropdown(String parentXpath, String childXpath, String expectItemText) {
         explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(parentXpath)));
-//        driver.findElement(By.xpath(parentXpath)).click();
-        jsExecutor.executeScript("argument[0].scrollIntoView(false);", parentXpath);
-        jsExecutor.executeScript("argument[0].click();", parentXpath);
 
-        sleepInSecond(1);
+        /*// Not need jsExecutor scroll, click:
+        jsExecutor.executeScript("arguments[0].scrollIntoView(false);", driver.findElement(By.xpath(parentXpath)));
+        jsExecutor.executeScript("arguments[0].click();", driver.findElement(By.xpath(parentXpath)));*/
+
+        driver.findElement(By.xpath(parentXpath)).click();
+        sleepInSecond(2);
         // B2: Cho cho tat ca cac item con duoc presence co trong HTML DOM trong vong 30s (khoi tao beforeClass)
         explicitWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(childXpath)));
 
         // B3: Lay list item - lay den the con chua text (tranh loi du space,\n)
         List<WebElement> childItems = driver.findElements(By.xpath(childXpath));
-//        System.out.println("Tong so luong item trong dropdown: " + childItems.size());
-        System.out.println();
+        System.out.println("Tong so luong item trong dropdown: " + childItems.size());
         // B4: Duyet cac item (lap) → chon cai item can chon
         for (WebElement tempElement : childItems) {
             if (tempElement.getText().trim().equals(expectItemText)) {
@@ -177,11 +180,11 @@ public class Topic0708_Dropdown_Exercise {
                     System.out.println("Click by Javascript - " + tempElement.getText());
                     // Scroll to element
                     WebElement temp = driver.findElement(By.xpath("//form[contains(@class,'ng-pristine')]"));
-                    jsExecutor.executeScript("argument[0].scrollIntoView(false);", temp);
+                    jsExecutor.executeScript("arguments[0].scrollIntoView(false);", temp);
                     sleepInSecond(2);
                     // Click by JavascriptExecutor
                     explicitWait.until(ExpectedConditions.elementToBeClickable(tempElement));
-                    jsExecutor.executeScript("argument[0].click();", tempElement);
+                    jsExecutor.executeScript("arguments[0].click();", tempElement);
                     sleepInSecond(2);
                 }
                 break;

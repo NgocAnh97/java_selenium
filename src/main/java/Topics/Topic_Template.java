@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
-// Link docs:
+// Link exercise docs:
 public class Topic_Template {
     WebDriver driver;
     String osName = System.getProperty("os.name");
