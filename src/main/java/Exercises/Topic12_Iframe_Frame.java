@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-// Link exercise docs:
+// Link exercise docs: https://docs.google.com/document/d/1IZn3_cDV95SRT7RuEl8NWjxw4IPmjwMpd38-HmXfgYM/edit#
 public class Topic12_Iframe_Frame {
     WebDriver driver;
     JavascriptExecutor jsExecutor;
