@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite thread-count="2" guice-stage="DEVELOPMENT" name="Failed suite [All Test Suite]" parallel="methods">
+  <test thread-count="2" name="test1(failed)" parallel="methods">
+    <classes>
+      <class name="testng.TestNG_06_Parameter_MultiBrowser">
+        <methods>
+          <include name="tearDown"/>
+          <include name="logoTest"/>
+        </methods>
+      </class> <!-- testng.TestNG_06_Parameter_MultiBrowser -->
+    </classes>
+  </test> <!-- test1(failed) -->
+</suite> <!-- Failed suite [All Test Suite] -->

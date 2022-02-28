@@ -3,7 +3,6 @@ package Exercises;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -16,7 +15,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 // Link exercise docs: https://docs.google.com/document/d/1If4zUnKjRCy7L26G4mlN4YFKdOJnK71SM4JOenygXvs/edit#
-public class Topic14_UploadFile_Sendkey {
+// Link video demo: https://www.youtube.com/watch?v=lhkDyxTfhqQ&list=PLo1QA-RK2zyoMmDg8blXyUmZmWQtB2xgw&index=35
+public class Topic14_UploadFile_AutoIT_Pending_OS_Window {
     WebDriver driver;
     String projectPath = System.getProperty("user.dir");
     String osName = System.getProperty("os.name");
@@ -51,16 +51,11 @@ public class Topic14_UploadFile_Sendkey {
     }
 
     //@Test
-    public void TC_01_UploadFile_Sendkeys() {
+    public void TC_01_UploadFile_AutoIT() {
         driver.get("https://blueimp.github.io/jQuery-File-Upload/");
 
         // Load file
-        driver.findElement(By.cssSelector("input[type='file']")).sendKeys(screen1Location);
-        sleepInSecond(1);
-        driver.findElement(By.cssSelector("input[type='file']")).sendKeys(screen2Location);
-        sleepInSecond(1);
-        driver.findElement(By.cssSelector("input[type='file']")).sendKeys(screen3Location);
-        sleepInSecond(1);
+
 
         // Uploading
         //driver.findElement(By.xpath("//span[text()='Start upload']")).click();
@@ -78,34 +73,11 @@ public class Topic14_UploadFile_Sendkey {
 
     }
 
-    @Test
-    public void TC_02_Multiple_Files_Sendkeys() {
-        driver.get("https://blueimp.github.io/jQuery-File-Upload/");
-
-        // Load file multiple files
-        driver.findElement(By.cssSelector("input[type='file']")).sendKeys(screen1Location + "\n" + screen2Location + "\n" + screen3Location);
-        sleepInSecond(1);
-
-        // Uploading
-        // Method 1:
-        driver.findElement(By.xpath("//span[text()='Start upload']")).click();
-        // Method 2:
-//        List<WebElement> startBtns = driver.findElements(By.xpath("//span[text()='Start']"));
-//        for (WebElement start : startBtns) {
-//            start.click();
-//            sleepInSecond(1);
-//        }
-
-        // Verify uploaded success
-        Assert.assertTrue(driver.findElement(By.cssSelector(".name a[title='" + screen1 + "']")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.cssSelector(".name a[title='" + screen2 + "']")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.cssSelector(".name a[title='" + screen3 + "']")).isDisplayed());
-    }
-
     @AfterClass
     public void afterClass() {
         driver.quit();
     }
+
 
     public void sleepInSecond(long second) {
         try {
